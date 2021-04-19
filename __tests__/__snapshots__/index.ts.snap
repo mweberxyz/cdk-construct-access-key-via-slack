@@ -110,7 +110,7 @@ Object {
     "UserOne348BCE11": Object {
       "Type": "AWS::IAM::User",
     },
-    "UserOneAccessKeyUserOneAccessKeyAccessKey22446435": Object {
+    "UserOneAccessKey08F2CF6A": Object {
       "Properties": Object {
         "UserName": Object {
           "Ref": "UserOne348BCE11",
@@ -118,7 +118,7 @@ Object {
       },
       "Type": "AWS::IAM::AccessKey",
     },
-    "UserOneAccessKeyUserOneAccessKeyNotification8D22D2B7": Object {
+    "UserOneAccessKeyNotification1C3B9FC2": Object {
       "DeletionPolicy": "Delete",
       "Properties": Object {
         "ServiceToken": Object {
@@ -128,11 +128,11 @@ Object {
           ],
         },
         "accessKeyId": Object {
-          "Ref": "UserOneAccessKeyUserOneAccessKeyAccessKey22446435",
+          "Ref": "UserOneAccessKey08F2CF6A",
         },
         "accessKeySecret": Object {
           "Fn::GetAtt": Array [
-            "UserOneAccessKeyUserOneAccessKeyAccessKey22446435",
+            "UserOneAccessKey08F2CF6A",
             "SecretAccessKey",
           ],
         },

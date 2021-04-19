@@ -29,7 +29,7 @@ export default class AccessKeyViaSlack extends Construct {
       },
     });
 
-    const accessKey = new CfnAccessKey(this, `${id}AccessKey`, {
+    const accessKey = new CfnAccessKey(this, "AccessKey", {
       userName: props.user.userName,
     });
 
@@ -39,7 +39,7 @@ export default class AccessKeyViaSlack extends Construct {
       accessKeySecret: accessKey.attrSecretAccessKey,
     };
 
-    new CustomResource(this, `${id}Notification`, {
+    new CustomResource(this, "Notification", {
       serviceToken: fn.functionArn,
       properties,
     });
