@@ -8,89 +8,97 @@ import type {
 import fetch from "node-fetch";
 import type { AccessKeyViaSlackProperties } from "../types";
 
-const { WEBHOOK_URL } = process.env;
-
-if (!WEBHOOK_URL) {
-  throw new Error("WEBHOOK_URL environment variable not defined,");
-}
-
-const postJson = async (url: string, body: unknown) => {
-  const response = await fetch(url, {
-    method: "post",
-    headers: {
-      "content-type": "application/json",
-    },
-    body: JSON.stringify(body),
-  });
-
-  if (response.status !== 200) {
-    throw new Error(`Non-200 response: ${await response.text()}`);
-  }
-};
-
-const eventHandlers = {
-  Create: (properties: AccessKeyViaSlackProperties) => {
-    return postJson(WEBHOOK_URL, {
-      blocks: [
-        {
-          type: "section",
-          text: {
-            type: "plain_text",
-            emoji: true,
-            text: `Access key created for ${properties.userName}`,
-          },
-        },
-        {
-          type: "section",
-          text: {
-            type: "mrkdwn",
-            text: `Access Key ID: \`${properties.accessKeyId}\``,
-          },
-        },
-        {
-          type: "section",
-          text: {
-            type: "mrkdwn",
-            text: `Access Key Secret: \`${properties.accessKeySecret}\``,
-          },
-        },
-        {
-          type: "divider",
-        },
-      ],
-    });
-  },
-  Update: async () => {},
-  Delete: async (properties: AccessKeyViaSlackProperties) => {
-    return postJson(WEBHOOK_URL, {
-      blocks: [
-        {
-          type: "section",
-          text: {
-            type: "plain_text",
-            emoji: true,
-            text: `Access key deleted for ${properties.userName}`,
-          },
-        },
-        {
-          type: "divider",
-        },
-      ],
-    });
-  },
-};
-
 export const handler: Handler = async (event: Event) => {
   const physicalResourceId = `${event.ResourceProperties.accessKeyId}-message`;
 
+  const respondToCloudformation = async (body: unknown) => {
+    const response = await fetch(event.ResponseURL, {
+      method: "put",
+      headers: {
+        "content-type": "",
+      },
+      body: JSON.stringify(body),
+    });
+
+    if (response.status !== 200) {
+      throw new Error(`Non-200 response from cloudformation: ${await response.text()}`);
+    }
+  };
+
   try {
+    const { WEBHOOK_URL } = process.env;
+
+    if (!WEBHOOK_URL) {
+      throw new Error("WEBHOOK_URL environment variable not defined,");
+    }
+
+    const sendSlackWebhook = async (body: unknown) => {
+      const response = await fetch(WEBHOOK_URL, {
+        method: "post",
+        headers: {
+          "content-type": "application/json",
+        },
+        body: JSON.stringify(body),
+      });
+
+      if (response.status !== 200) {
+        throw new Error(`Non-200 response from slack: ${await response.text()}`);
+      }
+    };
+
     const properties: AccessKeyViaSlackProperties = {
       accessKeyId: event.ResourceProperties.accessKeyId,
       accessKeySecret: event.ResourceProperties.accessKeySecret,
       userName: event.ResourceProperties.userName,
     };
 
-    await eventHandlers[event.RequestType](properties);
+    if (event.RequestType === "Create") {
+      await sendSlackWebhook({
+        blocks: [
+          {
+            type: "section",
+            text: {
+              type: "plain_text",
+              emoji: true,
+              text: `Access key created for ${properties.userName}`,
+            },
+          },
+          {
+            type: "section",
+            text: {
+              type: "mrkdwn",
+              text: `Access Key ID: \`${properties.accessKeyId}\``,
+            },
+          },
+          {
+            type: "section",
+            text: {
+              type: "mrkdwn",
+              text: `Access Key Secret: \`${properties.accessKeySecret}\``,
+            },
+          },
+          {
+            type: "divider",
+          },
+        ],
+      });
+    } else if (event.RequestType === "Delete") {
+      await sendSlackWebhook({
+        blocks: [
+          {
+            type: "section",
+            text: {
+              type: "plain_text",
+              emoji: true,
+              text: `Access key ${properties.accessKeyId} deleted for ${properties.userName}`,
+            },
+          },
+          {
+            type: "divider",
+          },
+        ],
+      });
+    }
 
     const successResponse: SuccessResponse = {
       Status: "SUCCESS",
@@ -100,18 +108,20 @@ export const handler: Handler = async (event: Event) => {
       LogicalResourceId: event.LogicalResourceId,
     };
 
-    await postJson(event.ResponseURL, successResponse);
+    await respondToCloudformation(successResponse);
   } catch (err) {
+    console.log(event.ResponseURL);
+
     const failedResponse: FailedResponse = {
       Status: "FAILED",
       StackId: event.StackId,
       RequestId: event.RequestId,
       LogicalResourceId: event.LogicalResourceId,
       PhysicalResourceId: physicalResourceId,
-      Reason: err.toString().substring(0, 50),
+      Reason: err.toString(),
     };
 
-    await postJson(event.ResponseURL, failedResponse);
+    await respondToCloudformation(failedResponse);
 
     throw err;
   }

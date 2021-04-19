@@ -3,28 +3,28 @@
 exports[`passes snapshot tests 1`] = `
 Object {
   "Parameters": Object {
-    "AssetParametersac8d1f94340759c95ec6b359b96c478734511cc7bdace4f65e1cec41e1d8c0c9ArtifactHash75537CBF": Object {
-      "Description": "Artifact hash for asset \\"ac8d1f94340759c95ec6b359b96c478734511cc7bdace4f65e1cec41e1d8c0c9\\"",
+    "AssetParametersf1b4100c7e75a88e353307fe9310f883ef7e10a756d98b9b64a12de930b9ff0cArtifactHashB48D9186": Object {
+      "Description": "Artifact hash for asset \\"f1b4100c7e75a88e353307fe9310f883ef7e10a756d98b9b64a12de930b9ff0c\\"",
       "Type": "String",
     },
-    "AssetParametersac8d1f94340759c95ec6b359b96c478734511cc7bdace4f65e1cec41e1d8c0c9S3Bucket11559BCC": Object {
-      "Description": "S3 bucket for asset \\"ac8d1f94340759c95ec6b359b96c478734511cc7bdace4f65e1cec41e1d8c0c9\\"",
+    "AssetParametersf1b4100c7e75a88e353307fe9310f883ef7e10a756d98b9b64a12de930b9ff0cS3Bucket9F03FBAD": Object {
+      "Description": "S3 bucket for asset \\"f1b4100c7e75a88e353307fe9310f883ef7e10a756d98b9b64a12de930b9ff0c\\"",
       "Type": "String",
     },
-    "AssetParametersac8d1f94340759c95ec6b359b96c478734511cc7bdace4f65e1cec41e1d8c0c9S3VersionKey47A5C675": Object {
-      "Description": "S3 key for asset version \\"ac8d1f94340759c95ec6b359b96c478734511cc7bdace4f65e1cec41e1d8c0c9\\"",
+    "AssetParametersf1b4100c7e75a88e353307fe9310f883ef7e10a756d98b9b64a12de930b9ff0cS3VersionKey8A3BD6DB": Object {
+      "Description": "S3 key for asset version \\"f1b4100c7e75a88e353307fe9310f883ef7e10a756d98b9b64a12de930b9ff0c\\"",
       "Type": "String",
     },
   },
   "Resources": Object {
-    "SingletonLambdaSingleton4b1fae73244a63f6FA7BA9F0": Object {
+    "SingletonLambdaSingleton284921f4cb3533ed3A984D71": Object {
       "DependsOn": Array [
-        "SingletonLambdaSingleton4b1fae73244a63f6ServiceRole6C559DC3",
+        "SingletonLambdaSingleton284921f4cb3533edServiceRoleF945F232",
       ],
       "Properties": Object {
         "Code": Object {
           "S3Bucket": Object {
-            "Ref": "AssetParametersac8d1f94340759c95ec6b359b96c478734511cc7bdace4f65e1cec41e1d8c0c9S3Bucket11559BCC",
+            "Ref": "AssetParametersf1b4100c7e75a88e353307fe9310f883ef7e10a756d98b9b64a12de930b9ff0cS3Bucket9F03FBAD",
           },
           "S3Key": Object {
             "Fn::Join": Array [
@@ -37,7 +37,7 @@ Object {
                       "Fn::Split": Array [
                         "||",
                         Object {
-                          "Ref": "AssetParametersac8d1f94340759c95ec6b359b96c478734511cc7bdace4f65e1cec41e1d8c0c9S3VersionKey47A5C675",
+                          "Ref": "AssetParametersf1b4100c7e75a88e353307fe9310f883ef7e10a756d98b9b64a12de930b9ff0cS3VersionKey8A3BD6DB",
                         },
                       ],
                     },
@@ -50,7 +50,7 @@ Object {
                       "Fn::Split": Array [
                         "||",
                         Object {
-                          "Ref": "AssetParametersac8d1f94340759c95ec6b359b96c478734511cc7bdace4f65e1cec41e1d8c0c9S3VersionKey47A5C675",
+                          "Ref": "AssetParametersf1b4100c7e75a88e353307fe9310f883ef7e10a756d98b9b64a12de930b9ff0cS3VersionKey8A3BD6DB",
                         },
                       ],
                     },
@@ -68,7 +68,7 @@ Object {
         "Handler": "index.handler",
         "Role": Object {
           "Fn::GetAtt": Array [
-            "SingletonLambdaSingleton4b1fae73244a63f6ServiceRole6C559DC3",
+            "SingletonLambdaSingleton284921f4cb3533edServiceRoleF945F232",
             "Arn",
           ],
         },
@@ -76,7 +76,7 @@ Object {
       },
       "Type": "AWS::Lambda::Function",
     },
-    "SingletonLambdaSingleton4b1fae73244a63f6ServiceRole6C559DC3": Object {
+    "SingletonLambdaSingleton284921f4cb3533edServiceRoleF945F232": Object {
       "Properties": Object {
         "AssumeRolePolicyDocument": Object {
           "Statement": Array [
@@ -123,7 +123,7 @@ Object {
       "Properties": Object {
         "ServiceToken": Object {
           "Fn::GetAtt": Array [
-            "SingletonLambdaSingleton4b1fae73244a63f6FA7BA9F0",
+            "SingletonLambdaSingleton284921f4cb3533ed3A984D71",
             "Arn",
           ],
         },

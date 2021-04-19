@@ -1,6 +1,6 @@
 {
   "name": "cdk-construct-access-key-via-slack",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "main": "lib/index.js",
   "license": "MIT",
   "engines": {
