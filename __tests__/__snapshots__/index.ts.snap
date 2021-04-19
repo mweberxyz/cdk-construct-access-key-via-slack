@@ -1,0 +1,148 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`passes snapshot tests 1`] = `
+Object {
+  "Parameters": Object {
+    "AssetParametersac8d1f94340759c95ec6b359b96c478734511cc7bdace4f65e1cec41e1d8c0c9ArtifactHash75537CBF": Object {
+      "Description": "Artifact hash for asset \\"ac8d1f94340759c95ec6b359b96c478734511cc7bdace4f65e1cec41e1d8c0c9\\"",
+      "Type": "String",
+    },
+    "AssetParametersac8d1f94340759c95ec6b359b96c478734511cc7bdace4f65e1cec41e1d8c0c9S3Bucket11559BCC": Object {
+      "Description": "S3 bucket for asset \\"ac8d1f94340759c95ec6b359b96c478734511cc7bdace4f65e1cec41e1d8c0c9\\"",
+      "Type": "String",
+    },
+    "AssetParametersac8d1f94340759c95ec6b359b96c478734511cc7bdace4f65e1cec41e1d8c0c9S3VersionKey47A5C675": Object {
+      "Description": "S3 key for asset version \\"ac8d1f94340759c95ec6b359b96c478734511cc7bdace4f65e1cec41e1d8c0c9\\"",
+      "Type": "String",
+    },
+  },
+  "Resources": Object {
+    "SingletonLambdaaccesskeyviaslack001url92D92381": Object {
+      "DependsOn": Array [
+        "SingletonLambdaaccesskeyviaslack001urlServiceRole6244B2C2",
+      ],
+      "Properties": Object {
+        "Code": Object {
+          "S3Bucket": Object {
+            "Ref": "AssetParametersac8d1f94340759c95ec6b359b96c478734511cc7bdace4f65e1cec41e1d8c0c9S3Bucket11559BCC",
+          },
+          "S3Key": Object {
+            "Fn::Join": Array [
+              "",
+              Array [
+                Object {
+                  "Fn::Select": Array [
+                    0,
+                    Object {
+                      "Fn::Split": Array [
+                        "||",
+                        Object {
+                          "Ref": "AssetParametersac8d1f94340759c95ec6b359b96c478734511cc7bdace4f65e1cec41e1d8c0c9S3VersionKey47A5C675",
+                        },
+                      ],
+                    },
+                  ],
+                },
+                Object {
+                  "Fn::Select": Array [
+                    1,
+                    Object {
+                      "Fn::Split": Array [
+                        "||",
+                        Object {
+                          "Ref": "AssetParametersac8d1f94340759c95ec6b359b96c478734511cc7bdace4f65e1cec41e1d8c0c9S3VersionKey47A5C675",
+                        },
+                      ],
+                    },
+                  ],
+                },
+              ],
+            ],
+          },
+        },
+        "Environment": Object {
+          "Variables": Object {
+            "WEBHOOK_URL": "url",
+          },
+        },
+        "Handler": "index.handler",
+        "Role": Object {
+          "Fn::GetAtt": Array [
+            "SingletonLambdaaccesskeyviaslack001urlServiceRole6244B2C2",
+            "Arn",
+          ],
+        },
+        "Runtime": "nodejs14.x",
+      },
+      "Type": "AWS::Lambda::Function",
+    },
+    "SingletonLambdaaccesskeyviaslack001urlServiceRole6244B2C2": Object {
+      "Properties": Object {
+        "AssumeRolePolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": "lambda.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "ManagedPolicyArns": Array [
+          Object {
+            "Fn::Join": Array [
+              "",
+              Array [
+                "arn:",
+                Object {
+                  "Ref": "AWS::Partition",
+                },
+                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
+              ],
+            ],
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "UserOne348BCE11": Object {
+      "Type": "AWS::IAM::User",
+    },
+    "UserOneAccessKeyUserOneAccessKeyAccessKey22446435": Object {
+      "Properties": Object {
+        "UserName": Object {
+          "Ref": "UserOne348BCE11",
+        },
+      },
+      "Type": "AWS::IAM::AccessKey",
+    },
+    "UserOneAccessKeyUserOneAccessKeyNotification8D22D2B7": Object {
+      "DeletionPolicy": "Delete",
+      "Properties": Object {
+        "ServiceToken": Object {
+          "Fn::GetAtt": Array [
+            "SingletonLambdaaccesskeyviaslack001url92D92381",
+            "Arn",
+          ],
+        },
+        "accessKeyId": Object {
+          "Ref": "UserOneAccessKeyUserOneAccessKeyAccessKey22446435",
+        },
+        "accessKeySecret": Object {
+          "Fn::GetAtt": Array [
+            "UserOneAccessKeyUserOneAccessKeyAccessKey22446435",
+            "SecretAccessKey",
+          ],
+        },
+        "userName": Object {
+          "Ref": "UserOne348BCE11",
+        },
+      },
+      "Type": "AWS::CloudFormation::CustomResource",
+      "UpdateReplacePolicy": "Delete",
+    },
+  },
+}
+`;
