@@ -17,9 +17,9 @@ Object {
     },
   },
   "Resources": Object {
-    "SingletonLambdaaccesskeyviaslack001url92D92381": Object {
+    "SingletonLambdaSingleton4b1fae73244a63f6FA7BA9F0": Object {
       "DependsOn": Array [
-        "SingletonLambdaaccesskeyviaslack001urlServiceRole6244B2C2",
+        "SingletonLambdaSingleton4b1fae73244a63f6ServiceRole6C559DC3",
       ],
       "Properties": Object {
         "Code": Object {
@@ -68,7 +68,7 @@ Object {
         "Handler": "index.handler",
         "Role": Object {
           "Fn::GetAtt": Array [
-            "SingletonLambdaaccesskeyviaslack001urlServiceRole6244B2C2",
+            "SingletonLambdaSingleton4b1fae73244a63f6ServiceRole6C559DC3",
             "Arn",
           ],
         },
@@ -76,7 +76,7 @@ Object {
       },
       "Type": "AWS::Lambda::Function",
     },
-    "SingletonLambdaaccesskeyviaslack001urlServiceRole6244B2C2": Object {
+    "SingletonLambdaSingleton4b1fae73244a63f6ServiceRole6C559DC3": Object {
       "Properties": Object {
         "AssumeRolePolicyDocument": Object {
           "Statement": Array [
@@ -123,7 +123,7 @@ Object {
       "Properties": Object {
         "ServiceToken": Object {
           "Fn::GetAtt": Array [
-            "SingletonLambdaaccesskeyviaslack001url92D92381",
+            "SingletonLambdaSingleton4b1fae73244a63f6FA7BA9F0",
             "Arn",
           ],
         },
