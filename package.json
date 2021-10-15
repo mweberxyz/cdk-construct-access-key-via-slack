@@ -12,7 +12,7 @@
     "build": "tsc --outDir lib && esbuild lib/lambda/index.js --bundle --platform=node --target=node14 --outdir=lib/lambda --allow-overwrite"
   },
   "devDependencies": {
-    "@aws-cdk/assert": "1.x",
+    "@aws-cdk/assert": "1.105.0",
     "@types/aws-lambda": "^8.10.75",
     "@types/jest": "^26.0.22",
     "@types/lodash": "^4.14.168",
@@ -34,8 +34,8 @@
     "typescript": "^4.2.4"
   },
   "dependencies": {
-    "@aws-cdk/aws-iam": "1.x",
-    "@aws-cdk/aws-lambda": "1.x",
-    "@aws-cdk/core": "1.x"
+    "@aws-cdk/aws-iam": "1.105.0",
+    "@aws-cdk/aws-lambda": "1.105.0",
+    "@aws-cdk/core": "1.105.0"
   }
 }
